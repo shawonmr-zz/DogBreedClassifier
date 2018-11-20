@@ -130,9 +130,9 @@ def train(n_epochs, loaders, model, optimizer, criterion, use_cuda, save_path):
             #print(batch_idx,data,target)
             # move to GPU
             if use_cuda:
-                data, target = Variable(data.cuda()), Variable(target.cuda())
+                data, target = data.cuda(), target.cuda()
             else:
-                data, target = Variable(data), Variable(target)
+                data, target = data, target
             ## find the loss and update the model parameters accordingly
             ## record the average training loss, using something like
             ## train_loss = train_loss + ((1 / (batch_idx + 1)) * (loss.data - train_loss))
@@ -160,9 +160,9 @@ def train(n_epochs, loaders, model, optimizer, criterion, use_cuda, save_path):
             #data, target = info
             # move to GPU
             if use_cuda:
-                data, target = Variable(data.cuda()), Variable(target.cuda())
+                data, target = data.cuda(), target.cuda()
             else:
-                data, target = Variable(data), Variable(target)
+                data, target = data, target
             ## update the average validation loss
             # forward pass: compute predicted outputs by passing inputs to the model
             output = model_scratch(data)
