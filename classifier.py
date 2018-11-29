@@ -6,7 +6,7 @@ import torchvision.transforms as transforms
 ## Specify appropriate transforms, and batch_sizes
 
 # number of subprocesses to use for data loading
-num_workers = 0
+num_workers = 2
 # how many samples per batch to load
 batch_size = 10
 
@@ -18,7 +18,7 @@ data_transform = transforms.Compose([transforms.RandomResizedCrop(224),
                                      ])
 
 #get the class labels from the dog_image direcotry
-train_dir='dog_images/train/'
+train_dir='/data/dog_images/train/'
 classes=[]
 for dirname in os.listdir(train_dir):
     s = str(dirname)
@@ -32,7 +32,7 @@ print('Number of train datasets',len(train_data))
 train_loader = torch.utils.data.DataLoader(train_data, batch_size=batch_size, num_workers=num_workers,shuffle=True)
 
 #get test data
-test_dir = 'dog_images/test/'
+test_dir = '/data/dog_images/test/'
 #load test data set
 test_data = datasets.ImageFolder(test_dir,transform=data_transform)
 print('Number of test datasets',len(test_data))
@@ -40,7 +40,7 @@ print('Number of test datasets',len(test_data))
 test_loader = torch.utils.data.DataLoader(test_data, batch_size=batch_size, num_workers=num_workers,shuffle=True)
 
 #get validation data
-valid_dir = 'dog_images/valid/'
+valid_dir = '/data/dog_images/valid/'
 #load test data set
 valid_data = datasets.ImageFolder(valid_dir,transform=data_transform)
 print('Number of valid datasets',len(valid_data))
@@ -125,6 +125,7 @@ def train(n_epochs, loaders, model, optimizer, criterion, use_cuda, save_path):
         for batch_idx, (data, target) in enumerate(loaders['train']):
         #for batch_idx, info in enumerate(train_loader):
             #data, target = info
+            target = target[:]-1
             print(data.shape,target.shape)
             print(target)
             #print(batch_idx,data,target)
@@ -159,6 +160,7 @@ def train(n_epochs, loaders, model, optimizer, criterion, use_cuda, save_path):
         #for batch_idx, info in enumerate(valid_loader):
             #data, target = info
             # move to GPU
+            target = target[:]-1
             if use_cuda:
                 data, target = data.cuda(), target.cuda()
             else:
